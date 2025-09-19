@@ -1,7 +1,9 @@
 import mongoose, { Schema}  from "mongoose"
 import jwt from "jsonwebtoken"
 import bcrypt from "bcryptjs"
+import dotenv from "dotenv"
 
+dotenv.config({port: "./.env" });
 
 const userSchema = new Schema(
     {
@@ -62,7 +64,10 @@ userSchema.methods.isPasswordCorrect = async function (password) {
      return await bcrypt.compare(password, this.password)
 }
 
-userSchema.methods.generateAccessToken = async function () {
+userSchema.methods.generateAccessToken =  function () {
+   if(!process.env.ACCESS_TOKEN_SECRET){
+      throw new Error("Access token secret is missing in .env");
+   }
      return jwt.sign(
         {
             _id: this._id,
@@ -78,6 +83,9 @@ userSchema.methods.generateAccessToken = async function () {
 }
 
 userSchema.methods.generateRefreshToken = async function () {
+   if(!process.env.REFRESH_TOKEN_SECRET){
+      throw new Error("Refresh token secret is missing in .env");
+   }
           return jwt.sign(
         {
             _id: this._id
