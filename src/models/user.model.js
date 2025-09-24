@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken"
 import bcrypt from "bcryptjs"
 import dotenv from "dotenv"
 
-dotenv.config({port: "./.env" });
+dotenv.config({path: "./.env" });
 
 const userSchema = new Schema(
     {
